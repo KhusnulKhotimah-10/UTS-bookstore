@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Dashboard - Toko Buku Digital</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="header">
+  <div class="brand">
+    <div class="logo">TB</div>
+    <div class="app-title">Toko Buku Digital</div>
+  </div>
+  <div class="header-right">
+    <div id="greetSmall" style="font-weight:600"></div>
+    <button class="btn ghost" onclick="location.href='checkout.html'">Keranjang</button>
+    <button class="btn" id="logoutBtn">Keluar</button>
+  </div>
+</header>
+
+<div class="container">
+  <div class="banner">
+    <div class="left">
+      <h1 id="greetingBanner">Selamat Datang</h1>
+      <p>Temukan buku yang Anda cari — ratusan pilihan ilmu & bacaan.</p>
+    </div>
+    <div class="right">
+      <img src="https://images.unsplash.com/photo-1516979187457-637abb4f9353?auto=format&fit=crop&w=500&q=60" alt="" style="width:220px;border-radius:12px;box-shadow:0 6px 18px rgba(16,24,40,0.08)">
+    </div>
+  </div>
+
+  <h3 style="margin-top:18px">Menu Cepat</h3>
+  <div class="menu-grid">
+    <div class="menu-item" onclick="location.href='stok.html'"><div class="menu-icon">📦</div><div>Informasi Stok / Katalog</div></div>
+    <div class="menu-item" onclick="location.href='tracking.html'"><div class="menu-icon">🚚</div><div>Tracking Pengiriman</div></div>
+    <div class="menu-item"><div class="menu-icon">📊</div><div>Laporan Pemesanan</div></div>
+    <div class="menu-item"><div class="menu-icon">📜</div><div>History Transaksi</div></div>
+  </div>
+
+  <h3 style="margin-top:22px">Rekomendasi untuk Anda</h3>
+  <div class="book-grid" id="bookGrid"></div>
+</div>
+
+<footer style="text-align:center;padding:20px;color:var(--muted)">© 2025 Toko Buku Digital</footer>
+
+<script src="data.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', ()=>{
+  const user = JSON.parse(localStorage.getItem('userLogged'));
+  if(!user || user.role!=='user'){ /* allow guest: role user */ }
+
+  // greeting
+  const h = new Date().getHours();
+  let g = 'Halo';
+  if(h<11) g='Selamat Pagi'; else if(h<15) g='Selamat Siang'; else if(h<19) g='Selamat Sore'; else g='Selamat Malam';
+  document.getElementById('greetingBanner').innerText = `${g}, ${user?.name || user?.email || 'Tamu'}`;
+  document.getElementById('greetSmall').innerText = `${(user?.name)|| (user?.email) || 'Tamu'}`;
+
+  // render buku
+  const grid = document.getElementById('bookGrid');
+  grid.innerHTML = dataKatalogBuku.map(b=>`
+    <div class="book card">
+      <img src="${b.cover}" alt="${b.namaBuku}">
+      <div class="meta">
+        <h4>${b.namaBuku}</h4>
+        <p>${b.penulis} · Stok: ${b.stok}</p>
+        <p style="font-weight:600;color:var(--primary)">Rp ${b.harga.toLocaleString('id-ID')}</p>
+        <button class="btn full" onclick="location.href='checkout.html'">Checkout</button>
+      </div>
+    </div>
+  `).join('');
+
+  // logout
+  document.getElementById('logoutBtn').addEventListener('click', ()=>{
+    localStorage.removeItem('userLogged'); 
+    location.href='index.html';
+  });
+});
+</script>
+
+</body>
+</html>

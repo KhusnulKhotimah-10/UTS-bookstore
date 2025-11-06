@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8" /><meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Stok / Katalog</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="header">
+  <div class="brand"><div class="logo">TB</div><div class="app-title">Stok / Katalog</div></div>
+  <div class="header-right"><button class="btn ghost" onclick="location.href='dashboard.html'">Kembali</button><button class="btn" id="logout2">Keluar</button></div>
+</header>
+
+<div class="container">
+  <div class="row" style="align-items:flex-start">
+    <div class="col card">
+      <h3>Daftar Katalog</h3>
+      <table class="table" id="tableKatalog">
+        <thead><tr><th>No</th><th>Kode</th><th>Judul</th><th>Penulis</th><th>Stok</th><th>Harga</th><th>Aksi</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <div style="width:340px" class="card">
+      <h3>Tambah Buku Baru</h3>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <input class="input" id="newKode" placeholder="Kode (ex: B005)">
+        <input class="input" id="newJudul" placeholder="Judul Buku">
+        <input class="input" id="newPenulis" placeholder="Penulis">
+        <input class="input" id="newStok" type="number" placeholder="Stok">
+        <input class="input" id="newHarga" type="number" placeholder="Harga (angka)">
+        <input class="input" id="newCover" placeholder="URL Cover (opsional)">
+        <div style="display:flex;gap:8px">
+          <button class="btn" onclick="tambahBuku()">Tambah</button>
+          <button class="btn ghost" onclick="resetForm()">Reset</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="data.js"></script>
+<script src="script.js"></script>
+<script>
+function renderKatalog(){
+  const tbody = document.querySelector('#tableKatalog tbody');
+  tbody.innerHTML = '';
+  dataKatalogBuku.forEach((b,i)=>{
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${i+1}</td>
+      <td>${b.kodeBarang}</td>
+      <td>${b.namaBuku}</td>
+      <td>${b.penulis}</td>
+      <td><input type="number" value="${b.stok}" min="0" style="width:80px" onchange="updateStok('${b.kodeBarang}', this.value)"></td>
+      <td>${currency(b.harga)}</td>
+      <td><button class="btn ghost small" onclick="removeBuku('${b.kodeBarang}')">Hapus</button></td>`;
+    tbody.appendChild(tr);
+  });
+}
+function tambahBuku(){
+  const kode = document.getElementById('newKode').value.trim();
+  const judul = document.getElementById('newJudul').value.trim();
+  const penulis = document.getElementById('newPenulis').value.trim();
+  const stok = parseInt(document.getElementById('newStok').value||0);
+  const harga = parseInt(document.getElementById('newHarga').value||0);
+  const cover = document.getElementById('newCover').value.trim() || 'https://images.unsplash.com/photo-1529676468690-8f0a1ee7b6b9?auto=format&fit=crop&w=800&q=60';
+  if(!kode||!judul||!penulis){ alert('Lengkapi data buku'); return; }
+  // prevent duplicate kode
+  if(dataKatalogBuku.some(x=>x.kodeBarang===kode)){ alert('Kode sudah ada'); return; }
+  dataKatalogBuku.push({kodeBarang:kode,namaBuku:judul,penulis,stok,harga,cover});
+  renderKatalog();
+  resetForm();
+}
+function resetForm(){
+  ['newKode','newJudul','newPenulis','newStok','newHarga','newCover'].forEach(id=>document.getElementById(id).value='');
+}
+function updateStok(kode, val){
+  const it = dataKatalogBuku.find(x=>x.kodeBarang===kode);
+  if(it) it.stok = parseInt(val);
+  renderKatalog();
+}
+function removeBuku(kode){
+  if(!confirm('Hapus buku ini?')) return;
+  const idx = dataKatalogBuku.findIndex(x=>x.kodeBarang===kode);
+  if(idx>=0) dataKatalogBuku.splice(idx,1);
+  renderKatalog();
+}
+document.getElementById('logout2').addEventListener('click', ()=>{ localStorage.removeItem('userLogged'); location.href='index.html' })
+renderKatalog();
+</script>
+</body>
+</html>

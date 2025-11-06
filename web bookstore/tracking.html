@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tracking Pengiriman - Toko Buku Digital</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #2563eb;
+  --bg: #f9fafb;
+  --text: #222;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Poppins', sans-serif;
+  background: var(--bg);
+  min-height: 100vh;
+}
+header {
+  background: var(--primary);
+  color: white;
+  padding: 15px 25px;
+  text-align: center;
+  font-weight: 600;
+}
+.container {
+  max-width: 700px;
+  margin: 40px auto;
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+h2 { color: var(--primary); margin-bottom: 15px; }
+input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  margin-bottom: 15px;
+}
+button {
+  width: 100%;
+  background: var(--primary);
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+}
+button:hover { background: #1e40af; }
+.result {
+  margin-top: 25px;
+  display: none;
+}
+.progress {
+  background: #e5e7eb;
+  border-radius: 8px;
+  height: 20px;
+  overflow: hidden;
+}
+.progress-bar {
+  height: 100%;
+  background: var(--primary);
+  width: 0%;
+  transition: width 1s ease-in-out;
+}
+.details {
+  margin-top: 15px;
+  font-size: 14px;
+  color: #333;
+}
+.details p { margin: 5px 0; }
+footer {
+  text-align: center;
+  padding: 15px;
+  color: #777;
+  font-size: 13px;
+}
+</style>
+</head>
+<body>
+
+<header>🚚 Tracking Pengiriman Buku</header>
+
+<div class="container">
+  <h2>Cek Status Pengiriman</h2>
+  <input type="text" id="noDO" placeholder="Masukkan Nomor Delivery Order (DO12345)" />
+  <button onclick="cariTracking()">Cari</button>
+
+  <div class="result" id="hasil">
+    <h3>Status Pengiriman</h3>
+    <div class="progress">
+      <div class="progress-bar" id="bar"></div>
+    </div>
+    <div class="details" id="detail"></div>
+  </div>
+</div>
+
+<footer>© 2025 Toko Buku Digital — Tracking Real-Time</footer>
+
+<script>
+function cariTracking() {
+  const no = document.getElementById("noDO").value.trim();
+  if (!no) {
+    alert("Masukkan nomor DO terlebih dahulu!");
+    return;
+  }
+
+  // Dummy data pengiriman
+  const data = {
+    DO12345: {
+      nama: "Agung Saputra",
+      status: "Sedang Dikirim",
+      progress: 70,
+      ekspedisi: "JNE REG",
+      tanggal: "6 November 2025",
+      jenis: "Paket Buku",
+      total: "Rp 120.000"
+    },
+    DO98765: {
+      nama: "Rina Kartika",
+      status: "Selesai Dikirim",
+      progress: 100,
+      ekspedisi: "SiCepat",
+      tanggal: "5 November 2025",
+      jenis: "Buku Novel",
+      total: "Rp 89.000"
+    }
+  };
+
+  const info = data[no];
+  const result = document.getElementById("hasil");
+  const bar = document.getElementById("bar");
+  const detail = document.getElementById("detail");
+
+  if (info) {
+    result.style.display = "block";
+    bar.style.width = info.progress + "%";
+    detail.innerHTML = `
+      <p>👤 Nama Pemesan: <b>${info.nama}</b></p>
+      <p>📦 Status: <b>${info.status}</b></p>
+      <p>🚚 Ekspedisi: ${info.ekspedisi}</p>
+      <p>📅 Tanggal Kirim: ${info.tanggal}</p>
+      <p>📗 Jenis Paket: ${info.jenis}</p>
+      <p>💰 Total Pembayaran: ${info.total}</p>
+      <button style="margin-top:10px;background:#22c55e;" onclick="hubungi('${info.nama}')">Hubungi via WhatsApp</button>
+    `;
+  } else {
+    alert("Nomor DO tidak ditemukan!");
+    result.style.display = "none";
+  }
+}
+
+function hubungi(nama) {
+  const pesan = `Halo, saya ${nama} ingin menanyakan status pengiriman buku saya.`;
+  window.open(`https://wa.me/+62 812-1031-9926text=${encodeURIComponent(pesan)}`, "_blank");
+}
+</script>
+
+</body>
+</html>

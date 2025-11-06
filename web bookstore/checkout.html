@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pemesanan Buku - Toko Buku Digital</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #2563eb;
+  --light: #eff6ff;
+  --bg: #f9fafb;
+  --text: #222;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Poppins', sans-serif;
+  background: var(--bg);
+  min-height: 100vh;
+}
+header {
+  background: var(--primary);
+  color: white;
+  padding: 15px 25px;
+  text-align: center;
+  font-weight: 600;
+}
+.container {
+  max-width: 800px;
+  margin: 30px auto;
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+h2 {
+  color: var(--primary);
+  margin-bottom: 15px;
+}
+form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+form label {
+  font-weight: 600;
+  font-size: 14px;
+}
+form input, form select, form textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 14px;
+}
+form textarea {
+  resize: vertical;
+  grid-column: span 2;
+}
+.btn {
+  grid-column: span 2;
+  background: var(--primary);
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  transition: 0.3s;
+}
+.btn:hover { background: #1e40af; }
+footer {
+  text-align: center;
+  padding: 15px;
+  color: #777;
+  font-size: 13px;
+}
+</style>
+</head>
+<body>
+
+<header>🛒 Pemesanan Buku</header>
+
+<div class="container">
+  <h2>Formulir Pemesanan</h2>
+  <form id="orderForm">
+    <div>
+      <label>Nama Pemesan</label>
+      <input type="text" id="nama" required>
+    </div>
+    <div>
+      <label>Email</label>
+      <input type="email" id="email" required>
+    </div>
+    <div>
+      <label>Judul Buku</label>
+      <input type="text" id="judul" required>
+    </div>
+    <div>
+      <label>Jumlah</label>
+      <input type="number" id="jumlah" min="1" value="1" required>
+    </div>
+    <div>
+      <label>Metode Pembayaran</label>
+      <select id="pembayaran" required>
+        <option value="">Pilih...</option>
+        <option>Transfer Bank</option>
+        <option>COD (Bayar di Tempat)</option>
+        <option>QRIS</option>
+      </select>
+    </div>
+    <div>
+      <label>Alamat Lengkap</label>
+      <textarea id="alamat" rows="3" required></textarea>
+    </div>
+    <button type="button" class="btn" onclick="kirimPesanan()">Kirim & Hubungi via WhatsApp</button>
+  </form>
+</div>
+
+<footer>© 2025 Toko Buku Digital — Pemesanan Aman & Cepat</footer>
+
+<script>
+function kirimPesanan() {
+  const nama = document.getElementById("nama").value;
+  const email = document.getElementById("email").value;
+  const judul = document.getElementById("judul").value;
+  const jumlah = document.getElementById("jumlah").value;
+  const pembayaran = document.getElementById("pembayaran").value;
+  const alamat = document.getElementById("alamat").value;
+
+  if (!nama || !email || !judul || !jumlah || !pembayaran || !alamat) {
+    alert("Lengkapi semua data terlebih dahulu!");
+    return;
+  }
+
+  const pesan = `Halo, saya ingin memesan buku berikut:%0A
+📚 Judul: ${judul}%0A
+📦 Jumlah: ${jumlah}%0A
+👤 Nama: ${nama}%0A
+📧 Email: ${email}%0A
+🏠 Alamat: ${alamat}%0A
+💳 Pembayaran: ${pembayaran}`;
+
+  // Ganti nomor di bawah dengan nomor kamu sendiri
+  window.open(`https://wa.me/+62 812-1031-9926text=${pesan}`, "_blank");
+}
+</script>
+
+</body>
+</html>
