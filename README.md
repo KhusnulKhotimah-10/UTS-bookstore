@@ -2,13 +2,9 @@
 🧩 Deskripsi Singkat
 
 Toko Buku Digital adalah website berbasis HTML + CSS + JavaScript murni (tanpa framework) yang digunakan untuk:
-
 Menampilkan katalog buku digital.
-
 Melakukan checkout pembelian buku.
-
 Melacak status pengiriman buku (tracking).
-
 Dilengkapi halaman login, dashboard user, dan halaman admin.
 
 Desain menggunakan tema cerah profesional (putih–biru pastel), sederhana namun modern.
